@@ -1,0 +1,16 @@
+Instruction for generate_metadata
+
+Using docker
+To build the docker image
+$ cd BGNN/Generate_metadata
+$ docker build -t metadata_generator -f Docker/Dockerfile .
+
+Use container to generate the metadata
+
+$ cd BGNN/Generate_metadata
+$ docker run -v $(pwd)/Data:/app/Data metadata_generator
+
+This will process all the images contained in the folder Data/Images and create metadata.json in Data
+
+
+Using Conda :
