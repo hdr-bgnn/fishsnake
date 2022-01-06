@@ -1,0 +1,28 @@
+Instruction for download images
+
+Using docker:
+Build the docker images
+$ cd Download_Images
+$ docker build --tag download_image .
+
+Use container to download
+$ cd BGNN/
+$ docker run -v $(pwd)/Data_test:/app/Data download_image
+This will create a folder BGNN/Data_test/Images and download images from link containing in sub_list_1.csv (in column = "path")
+
+
+Using Conda :
+$ cd BGNN/
+$ conda env create -f Download_Images/Download_images.yml
+$ conda activate Download_Images
+$ python Download_Images/download_images.py Data/sub_list_1.csv
+This will create a folder BGNN/Data_test/Images and download images from link containing in sub_list_1.csv (in column = "path")
+
+Using snakemake on top of conda env Download_Images
+if you don't have snakemake yet 
+$ conda install -n base -c conda-forge mamba
+$ conda activate Download_Images
+$ mamba create -c conda-forge -c bioconda -n snakemake snakemake
+$ cd BGNN/Data_test
+$snakemake --cores 4 -s ~/Documents/Project/BGNN/Download_Images/download.snake --config sub_list=sub_list_1.csv
+

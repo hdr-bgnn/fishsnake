@@ -1,0 +1,20 @@
+import pandas as pd
+
+samples_df = pd.read_csv(config.get("sub_list")).set_index("original_file_name", drop=False)
+NAMES = list(samples_df['original_file_name'])
+
+# download Images data from Tulane using the sub_list_1
+rule download_all:
+    input:
+        expand("Images/{sample}", sample=NAMES)
+
+# rule to download each individual file specified in samples_df
+rule download_reads:
+    output: "Images/{sample}"
+    threads: 4
+    params:
+        # dynamically grab the download link from the "path" column in the samples data frame
+        download_link = lambda wildcards: samples_df.loc[wildcards.sample, "path"]
+    shell: """
+        curl -L {params.download_link} -o {output}
+        """
